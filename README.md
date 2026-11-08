@@ -7,8 +7,8 @@ A MySQL data manipulation, DDL alteration, and scalar transformation project bas
 ## Repository Structure
 
 - `Client.csv` - Baseline dataset containing client demographics, addresses, and initial credit limits.
-- `solution1.sql` - Complete implementation script for Task 1 (DDL alterations, string manipulation, data updates, and fallback contact routing).
-- `solution2.sql` - Complete implementation script for Task 2 (Sub-string token parsing, partial record ingestion, and compound conditional filtering).
+- `01_schema_ddl_and_contact_normalization.sql` - Complete implementation script for Task 1 (DDL alterations, string manipulation, data updates, and fallback contact routing).
+- `02_substring_extraction_and_credit_audit.sql` - Complete implementation script for Task 2 (Sub-string token parsing, partial record ingestion, and compound conditional filtering).
 
 ---
 
@@ -53,7 +53,7 @@ The tasks implement built-in MySQL scalar functions across several categories:
 5. Display the first name, middle initial, and uppercase last name (with spaces in between), along with the mobile number if it has a value; if none, display the landline; if none, display the email address, sorted in descending order of the last name.
 6. Display `ClientNo`, the unified address in one column (`Street`, `City`, `Zip`), and the credit limit formatted with 2 decimal places and commas.
 
-### Solution Overview (`solution1.sql`)
+### Solution Overview (`01_schema_ddl_and_contact_normalization.sql`)
 1. **Schema Expansion (DDL)**: Modified table architecture by appending `mobileno`, `landline`, and `email` attributes sequentially after `Zip` using `ALTER TABLE ... ADD COLUMN`.
 2. **Automated Credential Generation**: Sliced and concatenated substrings from name attributes using `LEFT`, `TRIM`, and `LOWER` to populate uniform email credentials via `UPDATE`.
 3. **Targeted Mobile Allocation (DML)**: Updated primary cellular contact details for designated client accounts `C1` and `C5`.
@@ -72,7 +72,7 @@ The tasks implement built-in MySQL scalar functions across several categories:
    - 3.1 The last character of the zip code is `1` or `4`.
    - 3.2 The credit limit is within the 55k to 90k range ($55,000 to $90,000).
 
-### Solution Overview (`solution2.sql`)
+### Solution Overview (`02_substring_extraction_and_credit_audit.sql`)
 1. **Local Email Username Extraction**: Extracted the email user identifier prior to the `@` delimiter using `SUBSTRING_INDEX` alongside concatenated full names for clients residing in cities with the `'Ma%'` prefix.
 2. **Partial Record Ingestion (DML)**: Inserted a client profile omitting contact channels (`email` and `landline` set to `NULL`) to evaluate nullable attribute behavior.
 3. **Targeted Multi-Condition Geographic & Credit Rollup**: Concatenated full postal addresses while filtering by terminal postal digits (`'1'` or `'4'`) using `RIGHT` and bounding credit exposure to the $55,000–$90,000 tier with `FORMAT`.
